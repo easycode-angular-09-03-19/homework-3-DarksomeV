@@ -1,0 +1,25 @@
+<div class="my-car">
+  <h2>{{ car.name }}</h2>
+  <h3>Основное:</h3>
+  <p>Киллометраж: {{car.mileage}} км</p>
+  <p [ngStyle]="{ 'font-weight': 'bold' }">Топлива осталось: {{car.fuelCurrent | number:'1.2-2'}} л</p>
+  <p *ngIf="exccess_fuel>0.15">Вы еще себе заныкали {{ exccess_fuel | number:'1.2-2' }} л</p>
+  <p>Объем бака: {{car.fuelMax}} л</p>
+  <h3>Характеристики:</h3>
+  <ul>
+    <li *ngFor="let item of car.characteristics; let i = index; ">
+      <p [class.bold]="i == 3">{{ item }}</p>
+    </li>
+  </ul>
+</div>
+<div *ngIf="car.fuelCurrent < 6">
+  <p *ngIf="car.fuelCurrent < 6 && car.fuelCurrent > 1">У вас заканчивается топливо. Лучше заправтесь</p>
+  <p *ngIf="car.fuelCurrent < 1 && car.fuelCurrent >= 0">Топливо закончилось.</p>
+<p>Заправить на: (л)</p>
+<input type="number" min="1" max="25" [(ngModel)] = "plusFuel">
+<button (click)="refuel(plusFuel)">Заправить</button>
+</div>
+
+<p>Проехать , км:</p>
+<input type="number" min="1" [(ngModel)] = "way">
+<button (click)="drive(way)" [disabled]="car.fuelCurrent < 1">Проехать</button>
